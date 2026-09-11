@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>樂高瑪利歐的 99 乘法大冒險</title>
+  <title>樂高瑪利歐的 99 乘法大冒險 (虎哥練笑話歡樂版)</title>
   
   <!-- iPad / iOS Web App 配置 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,6 +27,7 @@
       --lego-blue: #0055BF;
       --lego-green: #237841;
       --lego-orange: #FF7E00;
+      --lego-purple: #7B1FA2;
       --lego-shadow: rgba(0,0,0,0.25);
       --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Comic Sans MS", cursive, sans-serif;
     }
@@ -56,10 +57,10 @@
       padding-bottom: env(safe-area-inset-bottom, 15px);
     }
 
-    /* 頂部導航與狀態欄 */
+    /* 頂部資訊列 */
     .header-bar {
       width: 95%;
-      max-width: 760px;
+      max-width: 780px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -97,6 +98,12 @@
       border-color: #fbd38d;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .btn-icon {
       background: #f0f4f8;
       border: 2px solid #ccc;
@@ -115,20 +122,19 @@
       box-shadow: 0 1px 0 #bbb;
     }
 
-    /* 模式選擇 Tab */
+    /* 模式選擇 Tab (4 種模式) */
     .mode-selector {
       width: 95%;
-      max-width: 760px;
-      display: flex;
-      gap: 10px;
+      max-width: 780px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
       margin: 12px 0 6px 0;
-      justify-content: center;
     }
 
     .mode-tab {
-      flex: 1;
-      padding: 10px 8px;
-      font-size: 1.05rem;
+      padding: 10px 4px;
+      font-size: 1rem;
       font-weight: 900;
       border-radius: 16px;
       text-align: center;
@@ -148,12 +154,13 @@
 
     .tab-adventure { background: #E52521; }
     .tab-practice { background: #0055BF; }
+    .tab-memory { background: #7B1FA2; }
     .tab-lab { background: #237841; }
 
     /* 主卡片容器 */
     .game-card {
       width: 95%;
-      max-width: 760px;
+      max-width: 780px;
       background: #ffffff;
       border-radius: 28px;
       padding: 16px 20px;
@@ -196,7 +203,7 @@
       box-shadow: 0 3px 0 #800;
     }
 
-    /* 題目看板：瑪利歐問號磚風格 */
+    /* 題目看板：問號磚風格 */
     .question-box {
       width: 100%;
       background: linear-gradient(135deg, #FCD116 0%, #FFA000 100%);
@@ -212,7 +219,6 @@
       box-shadow: inset 0 4px 8px rgba(255,255,255,0.6), 0 8px 12px rgba(0,0,0,0.2);
     }
 
-    /* 4 個角落金屬鉚釘 */
     .question-box::before, .question-box::after {
       content: "";
       position: absolute;
@@ -261,7 +267,7 @@
       box-shadow: 0 2px 0 #C05621;
     }
 
-    /* 樂高積木點陣視覺輔助 (專為 6 歲兒童設計) */
+    /* 樂高積木點陣視覺輔助 */
     .lego-visualizer-toggle {
       margin-top: 10px;
       background: #fff;
@@ -322,7 +328,6 @@
       box-shadow: inset 0 2px 0 rgba(255,255,255,0.4), 0 2px 3px rgba(0,0,0,0.2);
     }
 
-    /* 樂高凸起顆粒圓圈 */
     .lego-stud::after {
       content: "";
       width: 16px;
@@ -349,7 +354,7 @@
       text-shadow: 1px 1px 2px #000;
     }
 
-    /* 四個樂高積木大選項 (iPad 友善大尺寸) */
+    /* 四個樂高積木選項按鈕 */
     .options-grid {
       width: 100%;
       display: grid;
@@ -358,7 +363,6 @@
       margin-top: 16px;
     }
 
-    /* 樂高積木立體按鈕 */
     .lego-btn {
       position: relative;
       height: 78px;
@@ -376,7 +380,6 @@
       padding: 0;
     }
 
-    /* 上方樂高凸粒 */
     .lego-btn-studs {
       position: absolute;
       top: 6px;
@@ -394,49 +397,32 @@
       box-shadow: 0 1px 1px rgba(0,0,0,0.2);
     }
 
-    /* 紅色樂高塊 (Mario) */
     .lego-red {
       background: linear-gradient(180deg, #FF4B4B 0%, #D11013 100%);
       box-shadow: 0 8px 0 #8B0000, 0 10px 15px rgba(0,0,0,0.2);
     }
-    .lego-red:active {
-      transform: translateY(6px);
-      box-shadow: 0 2px 0 #8B0000;
-    }
+    .lego-red:active { transform: translateY(6px); box-shadow: 0 2px 0 #8B0000; }
 
-    /* 藍色樂高塊 (Toad) */
     .lego-blue {
       background: linear-gradient(180deg, #3182CE 0%, #0055BF 100%);
       box-shadow: 0 8px 0 #002B66, 0 10px 15px rgba(0,0,0,0.2);
     }
-    .lego-blue:active {
-      transform: translateY(6px);
-      box-shadow: 0 2px 0 #002B66;
-    }
+    .lego-blue:active { transform: translateY(6px); box-shadow: 0 2px 0 #002B66; }
 
-    /* 綠色樂高塊 (Luigi) */
     .lego-green {
       background: linear-gradient(180deg, #48BB78 0%, #237841 100%);
       box-shadow: 0 8px 0 #134524, 0 10px 15px rgba(0,0,0,0.2);
     }
-    .lego-green:active {
-      transform: translateY(6px);
-      box-shadow: 0 2px 0 #134524;
-    }
+    .lego-green:active { transform: translateY(6px); box-shadow: 0 2px 0 #134524; }
 
-    /* 黃色樂高塊 (Star / Coin) */
     .lego-yellow {
       background: linear-gradient(180deg, #FFD500 0%, #D69E2E 100%);
       box-shadow: 0 8px 0 #975A16, 0 10px 15px rgba(0,0,0,0.2);
       color: #744210;
       text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
     }
-    .lego-yellow:active {
-      transform: translateY(6px);
-      box-shadow: 0 2px 0 #975A16;
-    }
+    .lego-yellow:active { transform: translateY(6px); box-shadow: 0 2px 0 #975A16; }
 
-    /* 答對動畫 */
     @keyframes correctPulse {
       0% { transform: scale(1); filter: brightness(1); }
       50% { transform: scale(1.08); filter: brightness(1.3); }
@@ -447,7 +433,6 @@
       outline: 5px solid #48BB78 !important;
     }
 
-    /* 答錯搖晃 */
     @keyframes wrongShake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-8px); }
@@ -458,22 +443,23 @@
       opacity: 0.6;
     }
 
-    /* 提示與回饋文字 */
     .feedback-msg {
       margin-top: 14px;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 900;
-      min-height: 38px;
+      min-height: 48px;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      line-height: 1.4;
+      padding: 0 10px;
     }
     .feedback-correct { color: #2E8540; }
     .feedback-wrong { color: #C53030; }
 
-    /* 樂高瑪利歐城堡建造進度 */
+    /* 城堡建造進度 */
     .castle-builder {
       width: 100%;
       margin-top: 14px;
@@ -519,7 +505,95 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
     }
 
-    /* 自由探索模式 (積木實驗室) */
+    /* 口訣背誦模式專屬 UI */
+    .memory-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .memory-subtabs {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .subtab-btn {
+      flex: 1;
+      padding: 8px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border: 2px solid #7B1FA2;
+      border-radius: 14px;
+      background: #F3E5F5;
+      color: #6A1B9A;
+      cursor: pointer;
+    }
+    .subtab-btn.active {
+      background: #7B1FA2;
+      color: #fff;
+    }
+
+    .table-scroll-wrap {
+      width: 100%;
+      overflow-x: auto;
+      background: #F7FAFC;
+      border-radius: 16px;
+      padding: 8px;
+      border: 2px solid #E2E8F0;
+    }
+
+    .table-99 {
+      display: grid;
+      grid-template-columns: repeat(9, minmax(44px, 1fr));
+      gap: 5px;
+      min-width: 440px;
+    }
+
+    .cell-99 {
+      background: #fff;
+      border: 2px solid #CBD5E0;
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 2px 0 #A0AEC0;
+      transition: all 0.1s;
+    }
+    .cell-99:active {
+      transform: translateY(2px);
+      box-shadow: none;
+      background: #FEFCBF;
+      border-color: #D69E2E;
+    }
+
+    .cloze-box {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: #6A1B9A;
+      text-align: center;
+      background: #F3E5F5;
+      border: 4px dashed #AB47BC;
+      border-radius: 20px;
+      padding: 16px;
+      width: 100%;
+    }
+
+    .cloze-blank {
+      display: inline-block;
+      min-width: 60px;
+      border-bottom: 6px solid #7B1FA2;
+      color: #E52521;
+      padding: 0 4px;
+    }
+
+    /* 實驗室控制 */
     .lab-controls {
       width: 100%;
       display: flex;
@@ -559,7 +633,7 @@
       text-align: right;
     }
 
-    /* 破關慶祝彈窗 */
+    /* 彈跳視窗通用樣式 */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -577,49 +651,96 @@
       border-radius: 30px;
       padding: 24px;
       max-width: 480px;
-      width: 90%;
+      width: 92%;
       text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     @keyframes popIn {
-      0% { transform: scale(0.6); opacity: 0; }
+      0% { transform: scale(0.7); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
 
     .modal-title {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 900;
       color: #E52521;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
-    .modal-desc {
-      font-size: 1.2rem;
+    .setting-group {
+      text-align: left;
+      margin-bottom: 16px;
+      background: #F7FAFC;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 2px solid #E2E8F0;
+    }
+
+    .setting-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #2D3748;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
       font-weight: 700;
       color: #4A5568;
-      margin-bottom: 20px;
-      line-height: 1.5;
+      cursor: pointer;
+      font-size: 1rem;
     }
 
-    .btn-next-level {
-      background: #237841;
+    .select-dropdown {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      border: 2px solid #CBD5E0;
+      background: #fff;
+      outline: none;
+    }
+
+    .btn-save-settings {
+      background: #E52521;
       color: #fff;
       border: none;
-      border-radius: 20px;
-      padding: 14px 28px;
-      font-size: 1.35rem;
+      border-radius: 18px;
+      padding: 12px 28px;
+      font-size: 1.25rem;
       font-weight: 900;
       cursor: pointer;
-      box-shadow: 0 6px 0 #134524;
+      box-shadow: 0 5px 0 #9B111E;
+      margin-top: 10px;
     }
-    .btn-next-level:active {
-      transform: translateY(4px);
-      box-shadow: 0 2px 0 #134524;
+    .btn-save-settings:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #9B111E;
     }
 
-    /* 浮動金幣動畫容器 */
+    .btn-test-voice {
+      background: #3182CE;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 6px 14px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
     .coin-float {
       position: fixed;
       font-size: 2.4rem;
@@ -646,43 +767,66 @@
       <span>⭐</span>
       <span id="starCount">0</span>
     </div>
-    <button class="btn-icon" id="soundToggle" title="音效開關">🔊</button>
+    <div class="header-actions">
+      <button class="btn-icon" id="settingsBtn" title="語音與遊戲設定">⚙️</button>
+      <button class="btn-icon" id="soundToggle" title="音效開關">🔊</button>
+    </div>
   </div>
 
-  <!-- 遊戲模式切換 -->
+  <!-- 遊戲模式切換 (4 種模式) -->
   <div class="mode-selector">
     <button class="mode-tab tab-adventure active" onclick="switchMode('adventure')">🏰 冒險闖關</button>
     <button class="mode-tab tab-practice" onclick="switchMode('practice')">🎯 乘數練習</button>
+    <button class="mode-tab tab-memory" onclick="switchMode('memory')">⚡ 口訣背誦</button>
     <button class="mode-tab tab-lab" onclick="switchMode('lab')">🧱 積木實驗室</button>
   </div>
 
   <!-- 主遊戲卡片 -->
   <div class="game-card">
 
-    <!-- 關卡 / 乘數選擇列 (冒險與練習模式顯示) -->
-    <div class="level-pills" id="levelSelector">
-      <!-- 動態產生 -->
-    </div>
+    <div class="level-pills" id="levelSelector"></div>
 
-    <!-- 題目區域 (問號磚塊) -->
+    <!-- 題目區域 (冒險/練習模式) -->
     <div class="question-box" id="questionArea">
       <div class="question-row">
         <div class="math-expr" id="mathProblem">3 × 4 = ?</div>
         <button class="btn-speak" id="btnSpeak" title="朗讀題目">📢</button>
       </div>
 
-      <!-- 積木點陣切換按鈕 -->
       <button class="lego-visualizer-toggle" id="toggleVisualizer" onclick="toggleVisualizer()">
         <span>🧱</span> <span id="visualizerToggleText">查看樂高積木點陣</span>
       </button>
     </div>
 
+    <!-- ⚡ 口訣背誦專屬區域 -->
+    <div class="memory-container" id="memoryArea" style="display: none;">
+      <div class="memory-subtabs">
+        <button class="subtab-btn active" id="btnSubtabTable" onclick="switchMemorySubtab('table')">🎶 口訣發音大表盤</button>
+        <button class="subtab-btn" id="btnSubtabCloze" onclick="switchMemorySubtab('cloze')">❓ 挖空對暗號 (速記考驗)</button>
+      </div>
+
+      <!-- 1. 口訣大表盤 -->
+      <div id="memoryTableWrap" style="width: 100%;">
+        <div style="font-size: 0.95rem; font-weight: 800; color: #7B1FA2; margin-bottom: 6px; text-align: center;">
+          點選任意方格，聆聽並跟讀台灣標準口訣！
+        </div>
+        <div class="table-scroll-wrap">
+          <div class="table-99" id="table99Grid"></div>
+        </div>
+      </div>
+
+      <!-- 2. 挖空填空挑戰 -->
+      <div id="memoryClozeWrap" style="width: 100%; display: none;">
+        <div class="cloze-box" id="clozeProblem">
+          3 × <span class="cloze-blank">?</span> = 12
+        </div>
+      </div>
+    </div>
+
     <!-- 樂高積木點陣視覺化區塊 -->
     <div class="lego-plate-container" id="visualizerArea" style="display: none;">
       <div class="lego-plate-title" id="plateInfo">點擊積木顆粒數數看：共有 3 排，每排 4 個</div>
-      <div class="lego-grid" id="legoGrid">
-        <!-- 動態產生積木顆粒 -->
-      </div>
+      <div class="lego-grid" id="legoGrid"></div>
     </div>
 
     <!-- 四個選項 (大樂高積木按鈕) -->
@@ -705,7 +849,7 @@
       </button>
     </div>
 
-    <!-- 積木實驗室介面 (僅在 lab 模式下顯示) -->
+    <!-- 積木實驗室介面 -->
     <div class="lab-controls" id="labArea" style="display: none;">
       <div class="slider-row">
         <span class="slider-label">排數 (列)</span>
@@ -722,7 +866,6 @@
       </div>
     </div>
 
-    <!-- 即時回饋語 -->
     <div class="feedback-msg" id="feedbackMsg">點選正確的積木答案吧！</div>
 
     <!-- 瑪利歐樂高城堡建造進度條 -->
@@ -731,11 +874,55 @@
         <span>🚩 城堡升旗進度</span>
         <span id="castleProgressText">0 / 8 塊積木</span>
       </div>
-      <div class="castle-bricks" id="castleBricks">
-        <!-- 8 格積木磚 -->
-      </div>
+      <div class="castle-bricks" id="castleBricks"></div>
     </div>
 
+  </div>
+
+  <!-- ⚙️ 語音與自訂設定彈窗 -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-title">⚙️ 語音朗讀設定</div>
+
+      <!-- 語音模式切換 -->
+      <div class="setting-group">
+        <div class="setting-title">🗣️ 朗讀風格</div>
+        <label class="radio-option">
+          <input type="radio" name="voiceStyle" value="hugo" checked onchange="updateVoiceSettings()">
+          <span>🐯 虎哥練笑話歡樂風（生動多變口吻）</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="voiceStyle" value="rhyme" onchange="updateVoiceSettings()">
+          <span>經典乘法口訣（例如：「三四十二」）</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="voiceStyle" value="sentence" onchange="updateVoiceSettings()">
+          <span>親切完整算式（例如：「3 乘以 4 等於多少呢？」）</span>
+        </label>
+      </div>
+
+      <!-- 角色音色選擇 -->
+      <div class="setting-group">
+        <div class="setting-title">🎙️ 語音角色 (建議選台灣男聲)</div>
+        <select id="voiceSelect" class="select-dropdown" onchange="updateVoiceSettings()">
+          <option value="">系統自動選擇最佳中文 (台灣)</option>
+        </select>
+        <button class="btn-test-voice" id="btnTestVoice" onclick="testCurrentVoice()">試聽虎哥發音 📢</button>
+      </div>
+
+      <!-- 語速與音調 -->
+      <div class="setting-group">
+        <div class="setting-title">⚡ 朗讀語速：<span id="rateLabel">0.88x (說故事速度)</span></div>
+        <input type="range" class="slider-input" style="width:100%;" id="rateSlider" min="0.7" max="1.2" step="0.02" value="0.88" oninput="updateVoiceSettings()">
+      </div>
+
+      <div class="setting-group">
+        <div class="setting-title">🎵 說話音調：<span id="pitchLabel">大叔親切中低音 (0.9)</span></div>
+        <input type="range" class="slider-input" style="width:100%;" id="pitchSlider" min="0.75" max="1.4" step="0.05" value="0.9" oninput="updateVoiceSettings()">
+      </div>
+
+      <button class="btn-save-settings" onclick="closeSettingsModal()">儲存並返回 🚀</button>
+    </div>
   </div>
 
   <!-- 過關祝賀視窗 -->
@@ -744,15 +931,16 @@
       <div style="font-size: 4rem;">🎉🏰⭐</div>
       <div class="modal-title">太棒了！過關！</div>
       <div class="modal-desc" id="modalDesc">你成功收集了所有積木，瑪利歐升起城堡旗幟囉！</div>
-      <button class="btn-next-level" onclick="nextLevelOrRestart()">繼續下一關 🚀</button>
+      <button class="btn-save-settings" onclick="nextLevelOrRestart()">繼續下一關 🚀</button>
     </div>
   </div>
 
   <script>
     // ==========================================
-    // 1. 遊戲狀態與設定
+    // 1. 遊戲狀態與設定 (預設虎哥練笑話風格)
     // ==========================================
-    let currentMode = 'adventure'; // 'adventure', 'practice', 'lab'
+    let currentMode = 'adventure';
+    let memorySubtab = 'table';
     let currentLevel = 0;
     let practiceNum = 2;
     let coins = 0;
@@ -761,12 +949,20 @@
 
     let num1 = 2;
     let num2 = 3;
+    let clozeMissing = 'result';
     let correctAnswer = 6;
     let castleProgress = 0;
     const CASTLE_GOAL = 8;
     let isVisualizerOpen = false;
 
-    // 關卡規劃 (專為 6 歲孩童由易入難)
+    // 預設為虎哥風 (風格: hugo, 語速: 0.88, 音調: 0.90)
+    let voiceConfig = {
+      style: localStorage.getItem('voice_style') || 'hugo',
+      voiceURI: localStorage.getItem('voice_uri') || '',
+      rate: parseFloat(localStorage.getItem('voice_rate') || '0.88'),
+      pitch: parseFloat(localStorage.getItem('voice_pitch') || '0.90')
+    };
+
     const ADVENTURE_LEVELS = [
       { name: "世界 1: 2 & 5 (新手小蘑菇)", factors: [2, 5] },
       { name: "世界 2: 3 & 4 (樂高磚匠)", factors: [3, 4] },
@@ -775,8 +971,55 @@
       { name: "世界 5: 1~9 全面大挑戰 (無敵星)", factors: [1, 2, 3, 4, 5, 6, 7, 8, 9] }
     ];
 
+    const CHINESE_DIGITS = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+
+    // 🐯 虎哥答對隨機讚美台詞庫 (多元隨機播放)
+    const HUGO_CORRECT_PRAISES = [
+      (rhyme) => `吼！答對了捏！${rhyme}！瑪利歐吃到超級無敵星星，太強啦！`,
+      (rhyme) => `哇哈哈～太厲害了！${rhyme}！樂高積木又拼上一大塊，虎哥請你吃冰棒啦！`,
+      (rhyme) => `哎唷～怎麼這麼聰明啦！${rhyme}！瑪利歐直接跳過大水管囉！`,
+      (rhyme) => `賀啦！算得真準！${rhyme}！金幣鏗鏗鏘鏘掉十個下來啦！`,
+      (rhyme) => `太神啦！${rhyme}！庫巴大魔王看到你都要嚇跑了！`,
+      (rhyme) => `吼吼～給你一百分！${rhyme}！瑪利歐城堡就快要蓋好囉！`,
+      (rhyme) => `讚啦！${rhyme}！你的腦袋瓜轉得比風車還要快捏！`
+    ];
+
+    // 🐯 虎哥答錯隨機溫暖鼓勵台詞庫 (多元隨機播放，不氣餒)
+    const HUGO_WRONG_ENCOURAGEMENTS = [
+      "哎唷～差一點點啦！不要緊張，深呼吸再算一次看看！",
+      "吼～瑪利歐撞到磚塊了！點開樂高積木數數看，馬上就知道了啦！",
+      "沒關係沒關係～笑一個！再給它算一次，虎哥相信你一定會！",
+      "哎呀～積木滑掉一塊啦！再想一下口訣怎麼唸喔！",
+      "慢慢來～不要急！再看一眼題目，你可以過關的啦！",
+      "歪腰～答錯沒關係，笑一笑肚子就不痛了，再來挑戰一次！"
+    ];
+
+    // 🐯 虎哥出題隨機台詞
+    const HUGO_QUESTIONS = [
+      (n1, n2) => `來喔！虎哥出題囉！${n1} 乘以 ${n2}，等於多少呢？`,
+      (n1, n2) => `注意看問號磚塊！${n1} 乘以 ${n2}，會掉出多少金幣呢？`,
+      (n1, n2) => `動動腦時間！${n1} 乘 ${n2}，答案在哪裡咧？`
+    ];
+
+    function getMultiplicationRhyme(a, b) {
+      const prod = a * b;
+      const aStr = CHINESE_DIGITS[a];
+      const bStr = CHINESE_DIGITS[b];
+      if (prod < 10) {
+        return `${aStr}${bStr}得${CHINESE_DIGITS[prod]}`;
+      } else if (prod === 10) {
+        return `${aStr}${bStr}一十`;
+      } else {
+        const tens = Math.floor(prod / 10);
+        const units = prod % 10;
+        const tensStr = tens === 1 ? '十' : `${CHINESE_DIGITS[tens]}十`;
+        const unitStr = units === 0 ? '' : CHINESE_DIGITS[units];
+        return `${aStr}${bStr}${tensStr}${unitStr}`;
+      }
+    }
+
     // ==========================================
-    // 2. Web Audio API 8-bit 音效合成器 (100% 離線可用)
+    // 2. Web Audio API 音效合成
     // ==========================================
     let audioCtx = null;
     function initAudio() {
@@ -789,40 +1032,33 @@
       }
     }
 
-    // 瑪利歐金幣音效 (B5 -> E6)
     function playCoinSound() {
       if (!soundEnabled) return;
       initAudio();
       if (!audioCtx) return;
-
       const now = audioCtx.currentTime;
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(987.77, now); // B5
-      osc.frequency.setValueAtTime(1318.51, now + 0.08); // E6
-
+      osc.frequency.setValueAtTime(987.77, now);
+      osc.frequency.setValueAtTime(1318.51, now + 0.08);
       gain.gain.setValueAtTime(0.3, now);
       gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start(now);
       osc.stop(now + 0.35);
     }
 
-    // 破關勝利音樂 (8-bit Fanfare)
     function playVictorySound() {
       if (!soundEnabled) return;
       initAudio();
       if (!audioCtx) return;
-
       const notes = [
-        { f: 523.25, d: 0.12 }, // C5
-        { f: 659.25, d: 0.12 }, // E5
-        { f: 783.99, d: 0.12 }, // G5
-        { f: 1046.50, d: 0.3 }  // C6
+        { f: 523.25, d: 0.12 },
+        { f: 659.25, d: 0.12 },
+        { f: 783.99, d: 0.12 },
+        { f: 1046.50, d: 0.3 }
       ];
       let t = audioCtx.currentTime;
       notes.forEach(n => {
@@ -840,30 +1076,24 @@
       });
     }
 
-    // 答錯輕柔提示音 (彈簧啵一聲)
     function playWrongSound() {
       if (!soundEnabled) return;
       initAudio();
       if (!audioCtx) return;
-
       const now = audioCtx.currentTime;
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(280, now);
       osc.frequency.exponentialRampToValueAtTime(140, now + 0.25);
-
       gain.gain.setValueAtTime(0.25, now);
       gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start(now);
       osc.stop(now + 0.25);
     }
 
-    // 樂高卡榫扣上聲 (短促點擊)
     function playSnapSound() {
       if (!soundEnabled) return;
       initAudio();
@@ -883,25 +1113,158 @@
     }
 
     // ==========================================
-    // 3. 語音朗讀 (Web Speech API - 台灣中文發音)
+    // 3. 語音系統 (優先選擇台灣男聲音色)
     // ==========================================
+    let cachedVoices = [];
+
+    function populateVoices() {
+      if (!('speechSynthesis' in window)) return;
+      cachedVoices = window.speechSynthesis.getVoices().filter(v => {
+        const lang = v.lang.toLowerCase();
+        return lang.includes('zh') || lang.includes('cmn') || lang.includes('tw') || lang.includes('cn');
+      });
+
+      const select = document.getElementById('voiceSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">系統推薦台灣聲音 (虎哥風)</option>';
+
+      let bestMaleVoice = null;
+      cachedVoices.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.voiceURI;
+        const nameLower = v.name.toLowerCase();
+        const isMale = nameLower.includes('男') || nameLower.includes('male') || nameLower.includes('yating') || nameLower.includes('zhi');
+        opt.textContent = `${v.name} (${v.lang}) ${isMale ? ' [推薦男聲]' : ''}`;
+        
+        // 若未指定語音，優先選擇第一個中文男聲作為虎哥預設
+        if (!voiceConfig.voiceURI && !bestMaleVoice && isMale && v.lang.includes('TW')) {
+          bestMaleVoice = v.voiceURI;
+        }
+
+        if (v.voiceURI === voiceConfig.voiceURI) {
+          opt.selected = true;
+        }
+        select.appendChild(opt);
+      });
+
+      if (!voiceConfig.voiceURI && bestMaleVoice) {
+        voiceConfig.voiceURI = bestMaleVoice;
+        select.value = bestMaleVoice;
+      }
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = populateVoices;
+      populateVoices();
+    }
+
     function speakText(text) {
       if (!soundEnabled || !('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'zh-TW';
-      utterance.rate = 0.95; // 稍慢，適合小朋友聽
-      utterance.pitch = 1.1; // 稍微童趣親切
+      utterance.rate = voiceConfig.rate;
+      utterance.pitch = voiceConfig.pitch;
+
+      if (voiceConfig.voiceURI && cachedVoices.length > 0) {
+        const matched = cachedVoices.find(v => v.voiceURI === voiceConfig.voiceURI);
+        if (matched) utterance.voice = matched;
+      }
       window.speechSynthesis.speak(utterance);
     }
 
     function speakProblem() {
       initAudio();
-      speakText(`${num1} 乘以 ${num2}，等於多少呢？`);
+      if (currentMode === 'memory' && memorySubtab === 'cloze') {
+        speakText(`對暗號時間！${CHINESE_DIGITS[num1]}${CHINESE_DIGITS[num2]}，後面接什麼呢？`);
+      } else if (voiceConfig.style === 'hugo') {
+        const qTemplate = HUGO_QUESTIONS[Math.floor(Math.random() * HUGO_QUESTIONS.length)];
+        speakText(qTemplate(num1, num2));
+      } else if (voiceConfig.style === 'rhyme') {
+        const rhymePrefix = `${CHINESE_DIGITS[num1]}${CHINESE_DIGITS[num2]}`;
+        speakText(`${rhymePrefix}，等於多少呢？`);
+      } else {
+        speakText(`${num1} 乘以 ${num2}，等於多少呢？`);
+      }
+    }
+
+    function speakAnswerPraise() {
+      const rhyme = getMultiplicationRhyme(num1, num2);
+      let textToSpeak = "";
+
+      if (voiceConfig.style === 'hugo') {
+        const praiseFn = HUGO_CORRECT_PRAISES[Math.floor(Math.random() * HUGO_CORRECT_PRAISES.length)];
+        textToSpeak = praiseFn(rhyme);
+      } else if (voiceConfig.style === 'rhyme') {
+        textToSpeak = `答對了！${rhyme}！太棒了！`;
+      } else {
+        textToSpeak = `答對了！${num1} 乘以 ${num2} 等於 ${num1 * num2}！`;
+      }
+      speakText(textToSpeak);
+      return textToSpeak;
+    }
+
+    function speakWrongEncouragement() {
+      let textToSpeak = "";
+      if (voiceConfig.style === 'hugo') {
+        textToSpeak = HUGO_WRONG_ENCOURAGEMENTS[Math.floor(Math.random() * HUGO_WRONG_ENCOURAGEMENTS.length)];
+      } else {
+        textToSpeak = "沒關係，再算算看喔！也可以點開積木數數看！";
+      }
+      speakText(textToSpeak);
+      return textToSpeak;
     }
 
     // ==========================================
-    // 4. 模式切換與關卡選單
+    // 4. 設定面板操作
+    // ==========================================
+    document.getElementById('settingsBtn').addEventListener('click', function() {
+      populateVoices();
+      const radios = document.getElementsByName('voiceStyle');
+      for (let r of radios) {
+        r.checked = (r.value === voiceConfig.style);
+      }
+      document.getElementById('rateSlider').value = voiceConfig.rate;
+      document.getElementById('pitchSlider').value = voiceConfig.pitch;
+      updateLabelTexts();
+      document.getElementById('settingsModal').style.display = 'flex';
+    });
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function updateLabelTexts() {
+      document.getElementById('rateLabel').textContent = `${voiceConfig.rate}x (${voiceConfig.rate <= 0.9 ? '虎哥從容說書' : '正常速度'})`;
+      document.getElementById('pitchLabel').textContent = `${voiceConfig.pitch} (${voiceConfig.pitch <= 0.95 ? '親切大叔腔' : '卡通高音'})`;
+    }
+
+    function updateVoiceSettings() {
+      const radios = document.getElementsByName('voiceStyle');
+      for (let r of radios) {
+        if (r.checked) voiceConfig.style = r.value;
+      }
+      voiceConfig.voiceURI = document.getElementById('voiceSelect').value;
+      voiceConfig.rate = parseFloat(document.getElementById('rateSlider').value);
+      voiceConfig.pitch = parseFloat(document.getElementById('pitchSlider').value);
+
+      updateLabelTexts();
+
+      localStorage.setItem('voice_style', voiceConfig.style);
+      localStorage.setItem('voice_uri', voiceConfig.voiceURI);
+      localStorage.setItem('voice_rate', voiceConfig.rate);
+      localStorage.setItem('voice_pitch', voiceConfig.pitch);
+    }
+
+    function testCurrentVoice() {
+      initAudio();
+      updateVoiceSettings();
+      const sample = HUGO_CORRECT_PRAISES[Math.floor(Math.random() * HUGO_CORRECT_PRAISES.length)]("三四十二");
+      speakText(sample);
+    }
+
+    // ==========================================
+    // 5. 模式切換與關卡選單
     // ==========================================
     function switchMode(mode) {
       currentMode = mode;
@@ -910,24 +1273,31 @@
 
       const levelSelector = document.getElementById('levelSelector');
       const questionArea = document.getElementById('questionArea');
+      const memoryArea = document.getElementById('memoryArea');
       const optionsGrid = document.getElementById('optionsGrid');
       const castleContainer = document.getElementById('castleContainer');
       const labArea = document.getElementById('labArea');
       const visualizerArea = document.getElementById('visualizerArea');
 
+      levelSelector.style.display = 'none';
+      questionArea.style.display = 'none';
+      memoryArea.style.display = 'none';
+      optionsGrid.style.display = 'none';
+      castleContainer.style.display = 'none';
+      labArea.style.display = 'none';
+      visualizerArea.style.display = 'none';
+
       if (mode === 'lab') {
-        levelSelector.style.display = 'none';
-        questionArea.style.display = 'none';
-        optionsGrid.style.display = 'none';
-        castleContainer.style.display = 'none';
         labArea.style.display = 'flex';
         visualizerArea.style.display = 'flex';
         updateLab();
+      } else if (mode === 'memory') {
+        memoryArea.style.display = 'flex';
+        renderMemoryMode();
       } else {
         questionArea.style.display = 'flex';
         optionsGrid.style.display = 'grid';
         castleContainer.style.display = 'flex';
-        labArea.style.display = 'none';
         levelSelector.style.display = 'flex';
         renderLevelPills();
         castleProgress = 0;
@@ -972,13 +1342,106 @@
     }
 
     // ==========================================
-    // 5. 出題核心與選項生成
+    // 6. 口訣背誦專屬邏輯 (大表盤 & 挖空挑戰)
+    // ==========================================
+    function switchMemorySubtab(tab) {
+      memorySubtab = tab;
+      document.getElementById('btnSubtabTable').classList.toggle('active', tab === 'table');
+      document.getElementById('btnSubtabCloze').classList.toggle('active', tab === 'cloze');
+      renderMemoryMode();
+    }
+
+    function renderMemoryMode() {
+      const tableWrap = document.getElementById('memoryTableWrap');
+      const clozeWrap = document.getElementById('memoryClozeWrap');
+      const optionsGrid = document.getElementById('optionsGrid');
+      const castleContainer = document.getElementById('castleContainer');
+
+      if (memorySubtab === 'table') {
+        tableWrap.style.display = 'block';
+        clozeWrap.style.display = 'none';
+        optionsGrid.style.display = 'none';
+        castleContainer.style.display = 'none';
+        document.getElementById('feedbackMsg').textContent = "點擊九九乘法表中的任一方格，邊聽邊跟著背誦！";
+        init99Table();
+      } else {
+        tableWrap.style.display = 'none';
+        clozeWrap.style.display = 'block';
+        optionsGrid.style.display = 'grid';
+        castleContainer.style.display = 'flex';
+        newClozeQuestion();
+      }
+    }
+
+    function init99Table() {
+      const grid = document.getElementById('table99Grid');
+      grid.innerHTML = '';
+      for (let r = 1; r <= 9; r++) {
+        for (let c = 1; c <= 9; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell-99';
+          cell.innerHTML = `<div>${r}×${c}</div><div style="font-size:1.1rem; color:#E52521; font-weight:900;">${r*c}</div>`;
+          cell.onclick = () => {
+            playSnapSound();
+            const rhyme = getMultiplicationRhyme(r, c);
+            speakText(rhyme);
+            document.getElementById('feedbackMsg').textContent = `🎶 口訣朗讀：「${rhyme}」(${r}×${c}=${r*c})`;
+          };
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    function newClozeQuestion() {
+      num1 = Math.floor(Math.random() * 8) + 2;
+      num2 = Math.floor(Math.random() * 8) + 2;
+      const prod = num1 * num2;
+
+      const modes = ['result', 'num2'];
+      clozeMissing = modes[Math.floor(Math.random() * modes.length)];
+
+      const clozeBox = document.getElementById('clozeProblem');
+      let options = new Set();
+
+      if (clozeMissing === 'result') {
+        correctAnswer = prod;
+        clozeBox.innerHTML = `${num1} × ${num2} = <span class="cloze-blank">?</span>`;
+        options.add(correctAnswer);
+        while (options.size < 4) {
+          const fake = correctAnswer + (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 4) + 1) * 2;
+          if (fake > 0 && fake <= 81) options.add(fake);
+        }
+      } else {
+        correctAnswer = num2;
+        clozeBox.innerHTML = `${num1} × <span class="cloze-blank">?</span> = ${prod}`;
+        options.add(correctAnswer);
+        while (options.size < 4) {
+          const fake = Math.floor(Math.random() * 8) + 2;
+          options.add(fake);
+        }
+      }
+
+      const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
+      const optButtons = document.querySelectorAll('.options-grid .lego-btn');
+      optButtons.forEach((btn, idx) => {
+        btn.querySelector('.opt-val').textContent = shuffledOptions[idx];
+        btn.dataset.val = shuffledOptions[idx];
+        btn.classList.remove('btn-correct', 'btn-wrong');
+        btn.disabled = false;
+      });
+
+      document.getElementById('feedbackMsg').textContent = "🐯 虎哥對暗號：空格裡應該填多少咧？";
+      document.getElementById('feedbackMsg').className = "feedback-msg";
+    }
+
+    // ==========================================
+    // 7. 出題核心與選項生成 (一般闖關/練習)
     // ==========================================
     function newQuestion() {
       if (currentMode === 'adventure') {
         const factors = ADVENTURE_LEVELS[currentLevel].factors;
         num1 = factors[Math.floor(Math.random() * factors.length)];
-        num2 = Math.floor(Math.random() * 9) + 1; // 1~9
+        num2 = Math.floor(Math.random() * 9) + 1;
       } else if (currentMode === 'practice') {
         num1 = practiceNum;
         num2 = Math.floor(Math.random() * 9) + 1;
@@ -987,10 +1450,8 @@
       correctAnswer = num1 * num2;
       document.getElementById('mathProblem').textContent = `${num1} × ${num2} = ?`;
 
-      // 產生 4 個選項（1 正確 + 3 具迷惑性但符合邏輯的干擾項）
       const options = new Set([correctAnswer]);
       while (options.size < 4) {
-        // 常見錯誤：加法 (num1 + num2)、少乘一倍 (num1*(num2-1))、多乘一倍 (num1*(num2+1)) 或隨機偏移
         const offsets = [-num1, num1, -(num1 + 1), num1 + 2, -2, 2, 4];
         const offset = offsets[Math.floor(Math.random() * offsets.length)];
         let fake = correctAnswer + offset;
@@ -1009,16 +1470,11 @@
         btn.disabled = false;
       });
 
-      // 更新積木點陣視覺化 (若有打開)
       updateLegoGrid(num1, num2);
-
       document.getElementById('feedbackMsg').textContent = "點選正確的積木答案吧！";
       document.getElementById('feedbackMsg').className = "feedback-msg";
     }
 
-    // ==========================================
-    // 6. 樂高積木點陣視覺化
-    // ==========================================
     function toggleVisualizer() {
       isVisualizerOpen = !isVisualizerOpen;
       const area = document.getElementById('visualizerArea');
@@ -1067,7 +1523,7 @@
     }
 
     // ==========================================
-    // 7. 答題邏輯與獎勵
+    // 8. 答題邏輯與隨機虎哥語音回饋
     // ==========================================
     function handleAnswer(optIndex) {
       initAudio();
@@ -1076,21 +1532,20 @@
       const feedback = document.getElementById('feedbackMsg');
 
       if (chosenVal === correctAnswer) {
-        // 答對！
         playCoinSound();
         btn.classList.add('btn-correct');
         coins += 10;
         document.getElementById('coinCount').textContent = coins;
         triggerCoinFly(btn);
 
-        feedback.textContent = `🎉 答對了！${num1} 乘以 ${num2} 等於 ${correctAnswer}！`;
+        // 播放隨機虎哥讚美語音
+        const praiseLine = speakAnswerPraise();
+        feedback.textContent = `🎉 ${praiseLine}`;
         feedback.className = "feedback-msg feedback-correct";
-        speakText(`答對了！${num1} 乘以 ${num2} 等於 ${correctAnswer}！`);
 
         castleProgress++;
         updateCastleUI();
 
-        // 鎖定所有選項避免重複點擊
         document.querySelectorAll('.options-grid .lego-btn').forEach(b => b.disabled = true);
 
         if (castleProgress >= CASTLE_GOAL) {
@@ -1101,17 +1556,24 @@
             showVictoryModal();
           }, 600);
         } else {
-          setTimeout(newQuestion, 1200);
+          setTimeout(() => {
+            if (currentMode === 'memory' && memorySubtab === 'cloze') {
+              newClozeQuestion();
+            } else {
+              newQuestion();
+            }
+          }, 1400);
         }
 
       } else {
-        // 答錯
         playWrongSound();
         btn.classList.add('btn-wrong');
         btn.disabled = true;
-        feedback.textContent = `💪 再想一下喔！可以點開「查看積木」數數看！`;
+
+        // 播放隨機虎哥溫暖鼓勵語音
+        const encourageLine = speakWrongEncouragement();
+        feedback.textContent = `🐯 ${encourageLine}`;
         feedback.className = "feedback-msg feedback-wrong";
-        speakText(`再算算看喔！`);
       }
     }
 
@@ -1141,9 +1603,11 @@
       const modal = document.getElementById('victoryModal');
       const desc = document.getElementById('modalDesc');
       if (currentMode === 'adventure') {
-        desc.textContent = `恭喜完成了「${ADVENTURE_LEVELS[currentLevel].name}」！瑪利歐城堡順利建好了！`;
+        desc.textContent = `恭喜完成了「${ADVENTURE_LEVELS[currentLevel].name}」！瑪利歐城堡順利建好，虎哥為你歡呼！`;
+      } else if (currentMode === 'memory') {
+        desc.textContent = `太厲害了！你已經把口訣背得滾瓜爛熟囉！獲得無敵星星 ⭐！`;
       } else {
-        desc.textContent = `太強了！你已經熟練掌握了 ${practiceNum} 的乘法表！獲得一顆無敵大星星 ⭐！`;
+        desc.textContent = `太強了！你已經熟練掌握了 ${practiceNum} 的乘法表！獲得無敵星星 ⭐！`;
       }
       modal.style.display = 'flex';
     }
@@ -1157,16 +1621,18 @@
         if (currentLevel < ADVENTURE_LEVELS.length - 1) {
           currentLevel++;
         } else {
-          currentLevel = 0; // 循環或回到起點
+          currentLevel = 0;
         }
         renderLevelPills();
       }
-      newQuestion();
+      
+      if (currentMode === 'memory' && memorySubtab === 'cloze') {
+        newClozeQuestion();
+      } else {
+        newQuestion();
+      }
     }
 
-    // ==========================================
-    // 8. 積木實驗室即時互動
-    // ==========================================
     function updateLab() {
       const rows = parseInt(document.getElementById('labRows').value, 10);
       const cols = parseInt(document.getElementById('labCols').value, 10);
@@ -1177,7 +1643,7 @@
     }
 
     // ==========================================
-    // 9. 事件監聽與初始化
+    // 9. 事件監聽與啟動
     // ==========================================
     document.getElementById('btnSpeak').addEventListener('click', speakProblem);
 
@@ -1186,7 +1652,6 @@
       this.textContent = soundEnabled ? '🔊' : '🔇';
     });
 
-    // 支援首次觸控啟動音效環境
     window.addEventListener('touchstart', function() {
       initAudio();
     }, { once: true });
@@ -1194,7 +1659,6 @@
       initAudio();
     }, { once: true });
 
-    // 初始化開始
     renderLevelPills();
     updateCastleUI();
     newQuestion();
