@@ -712,6 +712,24 @@
       outline: none;
     }
 
+    .preset-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-preset {
+      flex: 1;
+      padding: 6px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      border: 2px solid #CBD5E0;
+      border-radius: 10px;
+      background: #EDF2F7;
+      cursor: pointer;
+    }
+    .btn-preset:active { background: #E2E8F0; }
+
     .btn-save-settings {
       background: #E52521;
       color: #fff;
@@ -739,6 +757,19 @@
       font-weight: 800;
       cursor: pointer;
       margin-top: 6px;
+    }
+
+    /* iPad 男聲提示卡 */
+    .tip-box {
+      background: #FEFCBF;
+      border: 2px dashed #D69E2E;
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #744210;
+      margin-top: 8px;
+      line-height: 1.4;
     }
 
     .coin-float {
@@ -884,12 +915,21 @@
     <div class="modal-content">
       <div class="modal-title">⚙️ 語音朗讀設定</div>
 
-      <!-- 語音模式切換 -->
+      <!-- 快速音調風格預設按鈕 -->
+      <div class="setting-group">
+        <div class="setting-title">⚡ 快速風格預設</div>
+        <div class="preset-btns">
+          <button class="btn-preset" onclick="applyVoicePreset('hugo')">🐯 虎哥低音大叔風</button>
+          <button class="btn-preset" onclick="applyVoicePreset('mario')">🍄 瑪利歐活潑童音</button>
+        </div>
+      </div>
+
+      <!-- 語音風格選項 -->
       <div class="setting-group">
         <div class="setting-title">🗣️ 朗讀風格</div>
         <label class="radio-option">
           <input type="radio" name="voiceStyle" value="hugo" checked onchange="updateVoiceSettings()">
-          <span>🐯 虎哥練笑話歡樂風（生動多變口吻）</span>
+          <span>🐯 虎哥練笑話風（隨機幽默台詞）</span>
         </label>
         <label class="radio-option">
           <input type="radio" name="voiceStyle" value="rhyme" onchange="updateVoiceSettings()">
@@ -903,22 +943,31 @@
 
       <!-- 角色音色選擇 -->
       <div class="setting-group">
-        <div class="setting-title">🎙️ 語音角色 (建議選台灣男聲)</div>
+        <div class="setting-title">🎙️ 系統音色庫 (點擊選擇)</div>
         <select id="voiceSelect" class="select-dropdown" onchange="updateVoiceSettings()">
-          <option value="">系統自動選擇最佳中文 (台灣)</option>
+          <option value="">自動選擇最佳中文</option>
         </select>
-        <button class="btn-test-voice" id="btnTestVoice" onclick="testCurrentVoice()">試聽虎哥發音 📢</button>
+        <button class="btn-test-voice" id="btnTestVoice" onclick="testCurrentVoice()">試聽當前聲音 📢</button>
+
+        <!-- iPad 語音設定教學提示 -->
+        <div class="tip-box">
+          📱 <strong>為什麼 iPad 預設是女聲？</strong><br>
+          iPad 出廠通常只下載了女聲「美佳」。若要純天然男聲，請前往 iPad <strong>「設定」→「輔助使用」→「語音內容」→「聲音」→「中文 (台灣)」</strong>，點擊下載 <strong>「Siri 聲音 2 (男聲)」</strong> 或 <strong>「冠宇 (男聲)」</strong>，重開本頁面就會出現男聲選項！
+        </div>
       </div>
 
       <!-- 語速與音調 -->
       <div class="setting-group">
-        <div class="setting-title">⚡ 朗讀語速：<span id="rateLabel">0.88x (說故事速度)</span></div>
-        <input type="range" class="slider-input" style="width:100%;" id="rateSlider" min="0.7" max="1.2" step="0.02" value="0.88" oninput="updateVoiceSettings()">
+        <div class="setting-title">⚡ 朗讀語速：<span id="rateLabel">0.86x</span></div>
+        <input type="range" class="slider-input" style="width:100%;" id="rateSlider" min="0.7" max="1.2" step="0.02" value="0.86" oninput="updateVoiceSettings()">
       </div>
 
       <div class="setting-group">
-        <div class="setting-title">🎵 說話音調：<span id="pitchLabel">大叔親切中低音 (0.9)</span></div>
-        <input type="range" class="slider-input" style="width:100%;" id="pitchSlider" min="0.75" max="1.4" step="0.05" value="0.9" oninput="updateVoiceSettings()">
+        <div class="setting-title">🎵 聲音音調：<span id="pitchLabel">低音厚實大叔 (0.76)</span></div>
+        <input type="range" class="slider-input" style="width:100%;" id="pitchSlider" min="0.6" max="1.4" step="0.02" value="0.76" oninput="updateVoiceSettings()">
+        <div style="font-size:0.8rem; color:#718096; margin-top:4px;">
+          * 音調調到 0.70 ~ 0.80 之間，即便是女聲也會降調成厚實的大叔/老皮音效！
+        </div>
       </div>
 
       <button class="btn-save-settings" onclick="closeSettingsModal()">儲存並返回 🚀</button>
@@ -937,7 +986,7 @@
 
   <script>
     // ==========================================
-    // 1. 遊戲狀態與設定 (預設虎哥練笑話風格)
+    // 1. 遊戲狀態與設定 (虎哥低音風格：pitch=0.76, rate=0.86)
     // ==========================================
     let currentMode = 'adventure';
     let memorySubtab = 'table';
@@ -955,12 +1004,12 @@
     const CASTLE_GOAL = 8;
     let isVisualizerOpen = false;
 
-    // 預設為虎哥風 (風格: hugo, 語速: 0.88, 音調: 0.90)
+    // 預設強效降調為 0.76，確保在任何只有女聲的 iPad 上也能呈現低沈幽默大叔音
     let voiceConfig = {
       style: localStorage.getItem('voice_style') || 'hugo',
       voiceURI: localStorage.getItem('voice_uri') || '',
-      rate: parseFloat(localStorage.getItem('voice_rate') || '0.88'),
-      pitch: parseFloat(localStorage.getItem('voice_pitch') || '0.90')
+      rate: parseFloat(localStorage.getItem('voice_rate') || '0.86'),
+      pitch: parseFloat(localStorage.getItem('voice_pitch') || '0.76')
     };
 
     const ADVENTURE_LEVELS = [
@@ -973,7 +1022,7 @@
 
     const CHINESE_DIGITS = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
 
-    // 🐯 虎哥答對隨機讚美台詞庫 (多元隨機播放)
+    // 🐯 虎哥答對隨機讚美台詞庫 (7 種隨機輪播)
     const HUGO_CORRECT_PRAISES = [
       (rhyme) => `吼！答對了捏！${rhyme}！瑪利歐吃到超級無敵星星，太強啦！`,
       (rhyme) => `哇哈哈～太厲害了！${rhyme}！樂高積木又拼上一大塊，虎哥請你吃冰棒啦！`,
@@ -984,7 +1033,7 @@
       (rhyme) => `讚啦！${rhyme}！你的腦袋瓜轉得比風車還要快捏！`
     ];
 
-    // 🐯 虎哥答錯隨機溫暖鼓勵台詞庫 (多元隨機播放，不氣餒)
+    // 🐯 虎哥答錯隨機溫暖鼓勵台詞庫 (6 種隨機輪播)
     const HUGO_WRONG_ENCOURAGEMENTS = [
       "哎唷～差一點點啦！不要緊張，深呼吸再算一次看看！",
       "吼～瑪利歐撞到磚塊了！點開樂高積木數數看，馬上就知道了啦！",
@@ -994,7 +1043,6 @@
       "歪腰～答錯沒關係，笑一笑肚子就不痛了，再來挑戰一次！"
     ];
 
-    // 🐯 虎哥出題隨機台詞
     const HUGO_QUESTIONS = [
       (n1, n2) => `來喔！虎哥出題囉！${n1} 乘以 ${n2}，等於多少呢？`,
       (n1, n2) => `注意看問號磚塊！${n1} 乘以 ${n2}，會掉出多少金幣呢？`,
@@ -1019,7 +1067,7 @@
     }
 
     // ==========================================
-    // 2. Web Audio API 音效合成
+    // 2. Web Audio API 8-bit 音效
     // ==========================================
     let audioCtx = null;
     function initAudio() {
@@ -1113,7 +1161,7 @@
     }
 
     // ==========================================
-    // 3. 語音系統 (優先選擇台灣男聲音色)
+    // 3. 語音系統 (Web Speech API) & 自動男聲偵測
     // ==========================================
     let cachedVoices = [];
 
@@ -1126,19 +1174,21 @@
 
       const select = document.getElementById('voiceSelect');
       if (!select) return;
-      select.innerHTML = '<option value="">系統推薦台灣聲音 (虎哥風)</option>';
+      select.innerHTML = '<option value="">系統預設中文語音</option>';
 
-      let bestMaleVoice = null;
+      let preferredMaleVoice = null;
+
       cachedVoices.forEach(v => {
         const opt = document.createElement('option');
         opt.value = v.voiceURI;
         const nameLower = v.name.toLowerCase();
-        const isMale = nameLower.includes('男') || nameLower.includes('male') || nameLower.includes('yating') || nameLower.includes('zhi');
-        opt.textContent = `${v.name} (${v.lang}) ${isMale ? ' [推薦男聲]' : ''}`;
+        // 辨識各種男聲標籤：Siri 聲音2、男、male、Kuan-yu、Danny、Yunxi、Zhiwei
+        const isMale = nameLower.includes('男') || nameLower.includes('male') || nameLower.includes('kuan') || nameLower.includes('danny') || nameLower.includes('2') || nameLower.includes('zhiwei');
         
-        // 若未指定語音，優先選擇第一個中文男聲作為虎哥預設
-        if (!voiceConfig.voiceURI && !bestMaleVoice && isMale && v.lang.includes('TW')) {
-          bestMaleVoice = v.voiceURI;
+        opt.textContent = `${v.name} (${v.lang})${isMale ? ' 👨 [男聲推薦]' : ''}`;
+
+        if (!voiceConfig.voiceURI && !preferredMaleVoice && isMale && v.lang.includes('TW')) {
+          preferredMaleVoice = v.voiceURI;
         }
 
         if (v.voiceURI === voiceConfig.voiceURI) {
@@ -1147,9 +1197,10 @@
         select.appendChild(opt);
       });
 
-      if (!voiceConfig.voiceURI && bestMaleVoice) {
-        voiceConfig.voiceURI = bestMaleVoice;
-        select.value = bestMaleVoice;
+      // 如果有找到系統男聲，且使用者尚未手動指定，則自動啟用
+      if (!voiceConfig.voiceURI && preferredMaleVoice) {
+        voiceConfig.voiceURI = preferredMaleVoice;
+        select.value = preferredMaleVoice;
       }
     }
 
@@ -1216,8 +1267,22 @@
     }
 
     // ==========================================
-    // 4. 設定面板操作
+    // 4. 設定面板操作與預設套用
     // ==========================================
+    function applyVoicePreset(preset) {
+      if (preset === 'hugo') {
+        document.getElementById('pitchSlider').value = 0.76;
+        document.getElementById('rateSlider').value = 0.86;
+        const radios = document.getElementsByName('voiceStyle');
+        for (let r of radios) { r.checked = (r.value === 'hugo'); }
+      } else if (preset === 'mario') {
+        document.getElementById('pitchSlider').value = 1.15;
+        document.getElementById('rateSlider').value = 0.95;
+      }
+      updateVoiceSettings();
+      testCurrentVoice();
+    }
+
     document.getElementById('settingsBtn').addEventListener('click', function() {
       populateVoices();
       const radios = document.getElementsByName('voiceStyle');
@@ -1235,8 +1300,13 @@
     }
 
     function updateLabelTexts() {
-      document.getElementById('rateLabel').textContent = `${voiceConfig.rate}x (${voiceConfig.rate <= 0.9 ? '虎哥從容說書' : '正常速度'})`;
-      document.getElementById('pitchLabel').textContent = `${voiceConfig.pitch} (${voiceConfig.pitch <= 0.95 ? '親切大叔腔' : '卡通高音'})`;
+      const pitch = voiceConfig.pitch;
+      let pitchDesc = "正常音調";
+      if (pitch <= 0.82) pitchDesc = "低音厚實大叔";
+      else if (pitch >= 1.10) pitchDesc = "童趣活潑高音";
+
+      document.getElementById('rateLabel').textContent = `${voiceConfig.rate}x (${voiceConfig.rate <= 0.9 ? '虎哥說書速度' : '正常速度'})`;
+      document.getElementById('pitchLabel').textContent = `${voiceConfig.pitch} (${pitchDesc})`;
     }
 
     function updateVoiceSettings() {
@@ -1435,7 +1505,7 @@
     }
 
     // ==========================================
-    // 7. 出題核心與選項生成 (一般闖關/練習)
+    // 7. 出題核心與選項生成
     // ==========================================
     function newQuestion() {
       if (currentMode === 'adventure') {
@@ -1538,7 +1608,6 @@
         document.getElementById('coinCount').textContent = coins;
         triggerCoinFly(btn);
 
-        // 播放隨機虎哥讚美語音
         const praiseLine = speakAnswerPraise();
         feedback.textContent = `🎉 ${praiseLine}`;
         feedback.className = "feedback-msg feedback-correct";
@@ -1570,7 +1639,6 @@
         btn.classList.add('btn-wrong');
         btn.disabled = true;
 
-        // 播放隨機虎哥溫暖鼓勵語音
         const encourageLine = speakWrongEncouragement();
         feedback.textContent = `🐯 ${encourageLine}`;
         feedback.className = "feedback-msg feedback-wrong";
