@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>樂高瑪利歐的 99 乘法大冒險 (動感節奏連唸版)</title>
+  <title>樂高瑪利歐的 99 乘法大冒險 (注音學習版)</title>
   
   <!-- iPad / iOS Web App 配置 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,6 +12,11 @@
   <meta name="theme-color" content="#E52521">
   
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23E52521'/%3E%3Crect x='20' y='20' width='140' height='140' rx='20' fill='%23FCD116' stroke='%23C78B00' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23D48B00'/%3E%3Ccircle cx='130' cy='50' r='14' fill='%23D48B00'/%3E%3Ccircle cx='50' cy='130' r='14' fill='%23D48B00'/%3E%3Ccircle cx='130' cy='130' r='14' fill='%23D48B00'/%3E%3Ctext x='90' y='118' font-family='Arial Black, sans-serif' font-size='84' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3E%3F%3C/text%3E%3C/svg%3E">
+
+  <!-- 🔤 Google Fonts: Bpmf Huninn (注音粉圓體 - 國字右側自帶直排注音) + Fredoka (可愛英數) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bpmf+Huninn&family=Fredoka:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -28,7 +33,9 @@
       --lego-orange: #FF7E00;
       --lego-purple: #7B1FA2;
       --lego-shadow: rgba(0,0,0,0.25);
-      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Comic Sans MS", cursive, sans-serif;
+      --font-zhuyin: 'Fredoka', 'Bpmf Huninn', 'Bpmf Iansui', 'Bpmf Zihi Kai Std', 'HanWangKaiMediumChuIn', -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Comic Sans MS", cursive, sans-serif;
+      --font-standard: 'Fredoka', -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Comic Sans MS", cursive, sans-serif;
+      --font-family: var(--font-zhuyin);
     }
 
     * {
@@ -45,6 +52,7 @@
       background: linear-gradient(180deg, #6094ea 0%, #a1c4fd 60%, #5cb85c 60%, #449d44 65%, #c88a35 65%, #a2651b 100%);
       background-attachment: fixed;
       font-family: var(--font-family);
+      line-height: 1.5;
       color: #333;
       min-height: 100vh;
       display: flex;
@@ -54,6 +62,14 @@
       overflow-x: hidden;
       padding-top: env(safe-area-inset-top, 10px);
       padding-bottom: env(safe-area-inset-bottom, 15px);
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
+    body.no-zhuyin {
+      --font-family: var(--font-standard);
     }
 
     .header-bar {
@@ -113,8 +129,8 @@
     }
 
     .mode-tab {
-      padding: 10px 4px;
-      font-size: 1rem;
+      padding: 9px 2px;
+      font-size: 0.95rem;
       font-weight: 900;
       border-radius: 16px;
       text-align: center;
@@ -123,12 +139,21 @@
       color: white;
       transition: all 0.15s ease;
       box-shadow: 0 5px 0 rgba(0,0,0,0.25);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .mode-tab.active {
       transform: translateY(3px);
       box-shadow: 0 2px 0 rgba(0,0,0,0.3);
       filter: brightness(1.15);
       border: 3px solid #fff;
+    }
+
+    @media (max-width: 480px) {
+      .mode-tab { font-size: 0.82rem; padding: 8px 1px; border-radius: 12px; }
+      .badge { font-size: 1.05rem; padding: 4px 10px; }
+      .btn-icon { font-size: 1.05rem; padding: 5px 8px; }
     }
 
     .tab-adventure { background: #E52521; }
@@ -648,7 +673,8 @@
     <div class="badge badge-coin"><span>🪙</span><span id="coinCount">0</span></div>
     <div class="badge badge-star"><span>⭐</span><span id="starCount">0</span></div>
     <div class="header-actions">
-      <button class="btn-icon" id="settingsBtn" title="語音與錄音設定">⚙️</button>
+      <button class="btn-icon" id="zhuyinBtn" title="切換國字注音模式" style="font-weight:900; font-size:1rem; padding:6px 10px; background:#FFEAA7; border-color:#FDCB6E; border-radius:12px; color:#D35400;">ㄅ 注音:開</button>
+      <button class="btn-icon" id="settingsBtn" title="語音與風格設定">⚙️</button>
       <button class="btn-icon" id="soundToggle" title="音效開關">🔊</button>
     </div>
   </div>
@@ -813,6 +839,21 @@
         <label class="radio-option">
           <input type="radio" name="voiceStyle" value="rhyme" onchange="updateVoiceSettings()">
           <span>經典乘法口訣（例如：「三四十二」）</span>
+        </label>
+      </div>
+
+      <div class="setting-group">
+        <div class="setting-title" style="color:#D35400;">🔤 國字注音字體（Bpmf Huninn）</div>
+        <div style="font-size:0.85rem; color:#4A5568; margin-bottom:8px; line-height:1.4;">
+          *專為台灣低年級與幼兒園小朋友打造，全站國字右側自動標註標準注音符號（字嗨注音粉圓體 / Google Fonts 開源字體）。
+        </div>
+        <label class="radio-option">
+          <input type="radio" name="zhuyinSetting" id="zhuyinRadioOn" value="true" onchange="setZhuyin(true)">
+          <span>開啟注音（ㄅㄆㄇㄈ 兒童認讀版 - 注音粉圓體）</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="zhuyinSetting" id="zhuyinRadioOff" value="false" onchange="setZhuyin(false)">
+          <span>關閉注音（純文字標準版）</span>
         </label>
       </div>
 
@@ -1774,6 +1815,8 @@
       updateRecUI();
       const radios = document.getElementsByName('voiceStyle');
       for (let r of radios) { r.checked = (r.value === voiceConfig.style); }
+      const zhuyinRadios = document.getElementsByName('zhuyinSetting');
+      for (let r of zhuyinRadios) { r.checked = (r.value === (zhuyinEnabled ? 'true' : 'false')); }
       document.getElementById('settingsModal').style.display = 'flex';
     });
 
@@ -1783,6 +1826,44 @@
       for (let r of radios) { if (r.checked) voiceConfig.style = r.value; }
       localStorage.setItem('voice_style', voiceConfig.style);
     }
+
+    // ==========================================
+    // 8. 注音字體切換控制 (Bpmf Huninn)
+    // ==========================================
+    let zhuyinEnabled = localStorage.getItem('zhuyin_enabled') !== 'false';
+
+    function setZhuyin(enabled) {
+      zhuyinEnabled = enabled;
+      localStorage.setItem('zhuyin_enabled', enabled ? 'true' : 'false');
+      const btn = document.getElementById('zhuyinBtn');
+      const radioOn = document.getElementById('zhuyinRadioOn');
+      const radioOff = document.getElementById('zhuyinRadioOff');
+
+      if (enabled) {
+        document.body.classList.remove('no-zhuyin');
+        if (btn) {
+          btn.textContent = 'ㄅ 注音:開';
+          btn.style.background = '#FFEAA7';
+          btn.style.borderColor = '#FDCB6E';
+          btn.style.color = '#D35400';
+        }
+        if (radioOn) radioOn.checked = true;
+      } else {
+        document.body.classList.add('no-zhuyin');
+        if (btn) {
+          btn.textContent = '文 注音:關';
+          btn.style.background = '#f0f4f8';
+          btn.style.borderColor = '#ccc';
+          btn.style.color = '#666';
+        }
+        if (radioOff) radioOff.checked = true;
+      }
+    }
+
+    document.getElementById('zhuyinBtn').addEventListener('click', function() {
+      setZhuyin(!zhuyinEnabled);
+      if (soundEnabled) playBrickClickSound();
+    });
 
     // ==========================================
     // 9. 事件監聽與啟動
@@ -1796,6 +1877,7 @@
     window.addEventListener('touchstart', function() { initAudio(); }, { once: true });
     window.addEventListener('click', function() { initAudio(); }, { once: true });
 
+    setZhuyin(zhuyinEnabled);
     renderLevelPills();
     updateCastleUI();
     newQuestion();
