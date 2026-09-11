@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>樂高瑪利歐的 99 乘法大冒險 (虎哥歡樂錄音版)</title>
+  <title>樂高瑪利歐的 99 乘法大冒險 (動感節奏連唸版)</title>
   
   <!-- iPad / iOS Web App 配置 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,6 @@
   <meta name="apple-mobile-web-app-title" content="乘法大冒險">
   <meta name="theme-color" content="#E52521">
   
-  <!-- Apple Touch Icon (自帶樂高瑪利歐問號磚圖示) -->
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23E52521'/%3E%3Crect x='20' y='20' width='140' height='140' rx='20' fill='%23FCD116' stroke='%23C78B00' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23D48B00'/%3E%3Ccircle cx='130' cy='50' r='14' fill='%23D48B00'/%3E%3Ccircle cx='50' cy='130' r='14' fill='%23D48B00'/%3E%3Ccircle cx='130' cy='130' r='14' fill='%23D48B00'/%3E%3Ctext x='90' y='118' font-family='Arial Black, sans-serif' font-size='84' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3E%3F%3C/text%3E%3C/svg%3E">
 
   <style>
@@ -403,12 +402,201 @@
     .castle-brick-slot { flex: 1; height: 100%; background: #E2E8F0; border-radius: 4px; transition: background 0.3s; }
     .castle-brick-slot.built { background: linear-gradient(180deg, #E53E3E 0%, #C53030 100%); }
 
-    /* 口訣背誦 UI */
-    .memory-container { width: 100%; display: flex; flex-direction: column; gap: 12px; align-items: center; }
-    .memory-subtabs { display: flex; gap: 10px; width: 100%; justify-content: center; margin-bottom: 8px; }
-    .subtab-btn { flex: 1; padding: 8px; font-size: 0.95rem; font-weight: 800; border: 2px solid #7B1FA2; border-radius: 14px; background: #F3E5F5; color: #6A1B9A; cursor: pointer; }
-    .subtab-btn.active { background: #7B1FA2; color: #fff; }
+    /* ========================================= */
+    /* ⚡ 節奏口訣連唸模式 (全新重磅升級) */
+    /* ========================================= */
+    .memory-container { width: 100%; display: flex; flex-direction: column; gap: 10px; align-items: center; }
 
+    .memory-subtabs { display: flex; gap: 8px; width: 100%; justify-content: center; margin-bottom: 6px; }
+    .subtab-btn {
+      flex: 1; padding: 8px 4px; font-size: 0.9rem; font-weight: 800;
+      border: 2px solid #7B1FA2; border-radius: 14px; background: #F3E5F5; color: #6A1B9A; cursor: pointer;
+    }
+    .subtab-btn.active { background: #7B1FA2; color: #fff; box-shadow: 0 3px 0 #4A148C; }
+
+    /* 節奏舞台容器 */
+    .rhythm-stage {
+      width: 100%;
+      background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+      border: 4px solid #AB47BC;
+      border-radius: 24px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 16px rgba(123, 31, 162, 0.15);
+    }
+
+    /* 乘數選擇圓鈕 2~9 */
+    .num-selector-row {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-num-pick {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid #AB47BC;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #6A1B9A;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 0 #7B1FA2;
+      transition: all 0.1s;
+    }
+    .btn-num-pick.active {
+      background: #FFD500;
+      color: #D11013;
+      border-color: #E52521;
+      box-shadow: 0 4px 0 #9B111E;
+      transform: scale(1.1);
+    }
+
+    /* 長度與節拍控制列 */
+    .rhythm-control-bar {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.8);
+      padding: 8px 14px;
+      border-radius: 16px;
+      border: 2px solid #CE93D8;
+    }
+
+    .count-toggle-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-count-toggle {
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: 2px solid #8E24AA;
+      background: #fff;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #6A1B9A;
+      cursor: pointer;
+    }
+    .btn-count-toggle.active {
+      background: #8E24AA;
+      color: #fff;
+    }
+
+    /* 當前節奏口訣特大看板 */
+    .rhythm-spotlight {
+      background: #fff;
+      border: 4px solid #7B1FA2;
+      border-radius: 20px;
+      width: 100%;
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .rhythm-text-main {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #E52521;
+      letter-spacing: 4px;
+      min-height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .rhythm-text-main.pulse {
+      transform: scale(1.15);
+      color: #7B1FA2;
+      text-shadow: 0 4px 10px rgba(123, 31, 162, 0.3);
+    }
+
+    .rhythm-sub-formula {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #4A5568;
+      margin-top: 4px;
+    }
+
+    /* 舞動樂高積木進度條 (5 或 9 塊) */
+    .rhythm-brick-track {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      justify-content: center;
+      padding: 4px;
+    }
+
+    .chant-brick {
+      flex: 1;
+      min-height: 48px;
+      background: #E2E8F0;
+      border-radius: 10px;
+      border: 2px solid #CBD5E0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #4A5568;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .chant-brick.active {
+      background: linear-gradient(180deg, #FFD500 0%, #FFA000 100%);
+      border-color: #E52521;
+      color: #D11013;
+      transform: translateY(-6px) scale(1.08);
+      box-shadow: 0 6px 0 #9B111E, 0 8px 12px rgba(0,0,0,0.2);
+    }
+
+    .chant-brick.finished {
+      background: #C6F6D5;
+      border-color: #38A169;
+      color: #22543D;
+    }
+
+    /* 大播放控制鍵 */
+    .btn-play-chant {
+      background: linear-gradient(180deg, #48BB78 0%, #2F855A 100%);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 14px 36px;
+      font-size: 1.4rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #22543D, 0 8px 15px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.1s;
+    }
+    .btn-play-chant:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #22543D;
+    }
+    .btn-play-chant.playing {
+      background: linear-gradient(180deg, #E53E3E 0%, #9B2C2C 100%);
+      box-shadow: 0 6px 0 #742A2A;
+    }
+
+    /* 表盤與挖空次頁面 */
     .table-scroll-wrap { width: 100%; overflow-x: auto; background: #F7FAFC; border-radius: 16px; padding: 8px; border: 2px solid #E2E8F0; }
     .table-99 { display: grid; grid-template-columns: repeat(9, minmax(44px, 1fr)); gap: 5px; min-width: 440px; }
     .cell-99 { background: #fff; border: 2px solid #CBD5E0; border-radius: 10px; padding: 8px 4px; text-align: center; font-size: 0.85rem; font-weight: 800; cursor: pointer; }
@@ -436,40 +624,11 @@
     .setting-group { text-align: left; margin-bottom: 16px; background: #F7FAFC; padding: 12px 16px; border-radius: 16px; border: 2px solid #E2E8F0; }
     .setting-title { font-weight: 800; font-size: 1.05rem; color: #2D3748; margin-bottom: 8px; }
 
-    /* 🎙️ 專屬虎哥錄音面板 */
-    .rec-box {
-      background: #FFF5F5;
-      border: 3px dashed #E53E3E;
-      border-radius: 16px;
-      padding: 12px;
-      margin-top: 8px;
-    }
-
-    .rec-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .btn-rec {
-      background: #E53E3E;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 8px 14px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .btn-rec.recording {
-      background: #C53030;
-      animation: recBlink 0.6s infinite alternate;
-    }
-    @keyframes recBlink {
-      from { opacity: 1; transform: scale(1); }
-      to { opacity: 0.6; transform: scale(1.05); }
-    }
+    .rec-box { background: #FFF5F5; border: 3px dashed #E53E3E; border-radius: 16px; padding: 12px; margin-top: 8px; }
+    .rec-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .btn-rec { background: #E53E3E; color: #fff; border: none; border-radius: 12px; padding: 8px 14px; font-size: 0.95rem; font-weight: 800; cursor: pointer; }
+    .btn-rec.recording { background: #C53030; animation: recBlink 0.6s infinite alternate; }
+    @keyframes recBlink { from { opacity: 1; transform: scale(1); } to { opacity: 0.6; transform: scale(1.05); } }
 
     .btn-save-settings {
       background: #E52521; color: #fff; border: none; border-radius: 18px; padding: 12px 28px; font-size: 1.25rem; font-weight: 900; cursor: pointer; box-shadow: 0 5px 0 #9B111E; margin-top: 10px;
@@ -515,29 +674,69 @@
       </button>
     </div>
 
+    <!-- ⚡ 口訣背誦專屬區域 (含動感連念舞台) -->
     <div class="memory-container" id="memoryArea" style="display: none;">
       <div class="memory-subtabs">
-        <button class="subtab-btn active" id="btnSubtabTable" onclick="switchMemorySubtab('table')">🎶 口訣發音大表盤</button>
-        <button class="subtab-btn" id="btnSubtabCloze" onclick="switchMemorySubtab('cloze')">❓ 挖空對暗號 (速記考驗)</button>
+        <button class="subtab-btn active" id="btnSubtabRhythm" onclick="switchMemorySubtab('rhythm')">🥁 節奏連念唱讀 (5/9連唱)</button>
+        <button class="subtab-btn" id="btnSubtabTable" onclick="switchMemorySubtab('table')">🎶 點擊大表盤</button>
+        <button class="subtab-btn" id="btnSubtabCloze" onclick="switchMemorySubtab('cloze')">❓ 挖空對暗號</button>
       </div>
 
-      <div id="memoryTableWrap" style="width: 100%;">
+      <!-- 1. 🥁 動感節奏連念舞台 (本次核心新增) -->
+      <div id="memoryRhythmWrap" class="rhythm-stage">
+        
+        <!-- 乘數選擇：2 ~ 9 -->
+        <div class="num-selector-row" id="chantNumPickers">
+          <!-- 2~9 圓鈕 -->
+        </div>
+
+        <!-- 連唸長度與節奏控制列 -->
+        <div class="rhythm-control-bar">
+          <div class="count-toggle-group">
+            <button class="btn-count-toggle active" id="btnCount5" onclick="setChantCount(5)">一次連唸 5 個 (前半段)</button>
+            <button class="btn-count-toggle" id="btnCount9" onclick="setChantCount(9)">完整連唸 9 個 (全套)</button>
+          </div>
+          <button class="btn-icon" id="beatToggle" onclick="toggleBeatSound()" title="節奏鼓點開關">🥁 鼓點:開</button>
+        </div>
+
+        <!-- 當前口訣特大聚光燈看板 -->
+        <div class="rhythm-spotlight">
+          <div class="rhythm-text-main" id="rhythmTextMain">準備開始！</div>
+          <div class="rhythm-sub-formula" id="rhythmSubFormula">點擊下方播放鈕，跟著節奏一起唱！</div>
+        </div>
+
+        <!-- 舞動樂高積木軌道 -->
+        <div class="rhythm-brick-track" id="rhythmBrickTrack">
+          <!-- 5 或 9 塊積木 -->
+        </div>
+
+        <!-- 大播放鍵 -->
+        <button class="btn-play-chant" id="btnPlayChant" onclick="toggleChantPlayback()">
+          <span id="playChantIcon">▶️</span> <span id="playChantText">開始節奏連唸</span>
+        </button>
+      </div>
+
+      <!-- 2. 81 格大表盤 -->
+      <div id="memoryTableWrap" style="width: 100%; display: none;">
         <div style="font-size: 0.95rem; font-weight: 800; color: #7B1FA2; margin-bottom: 6px; text-align: center;">
-          點選任意方格，聆聽並跟讀台灣標準口訣！
+          點選任意方格，聆聽單題口訣！
         </div>
         <div class="table-scroll-wrap"><div class="table-99" id="table99Grid"></div></div>
       </div>
 
+      <!-- 3. 挖空填空挑戰 -->
       <div id="memoryClozeWrap" style="width: 100%; display: none;">
         <div class="cloze-box" id="clozeProblem">3 × <span class="cloze-blank">?</span> = 12</div>
       </div>
     </div>
 
+    <!-- 樂高積木點陣視覺化區塊 -->
     <div class="lego-plate-container" id="visualizerArea" style="display: none;">
       <div class="lego-plate-title" id="plateInfo">點擊積木顆粒數數看：共有 3 排，每排 4 個</div>
       <div class="lego-grid" id="legoGrid"></div>
     </div>
 
+    <!-- 四個選項 (大樂高積木按鈕) -->
     <div class="options-grid" id="optionsGrid">
       <button class="lego-btn lego-red" onclick="handleAnswer(0)"><div class="lego-btn-studs"><div class="btn-stud"></div><div class="btn-stud"></div></div><span class="opt-val">12</span></button>
       <button class="lego-btn lego-blue" onclick="handleAnswer(1)"><div class="lego-btn-studs"><div class="btn-stud"></div><div class="btn-stud"></div></div><span class="opt-val">10</span></button>
@@ -567,20 +766,18 @@
     </div>
   </div>
 
-  <!-- ⚙️ 設定視窗 (含 100% 破解 iPhone 女聲限制的錄音室) -->
+  <!-- ⚙️ 設定視窗 -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
       <div class="modal-title">⚙️ 語音與虎哥原聲錄音</div>
 
-      <!-- 🎙️ 終極解法：真人大叔/虎哥錄音室 -->
       <div class="setting-group">
-        <div class="setting-title" style="color:#C53030;">🎙️ 虎哥真聲錄音室（破解 iPhone 限制最強招）</div>
+        <div class="setting-title" style="color:#C53030;">🎙️ 虎哥真聲錄音室</div>
         <div style="font-size:0.85rem; color:#4A5568; margin-bottom:8px; line-height:1.4;">
-          *因 iOS Safari 限制網頁無法調用系統 Siri 男聲，您可以直接在此錄製爸媽模仿虎哥的熱情加油聲，答對時就會播放真正的聲音！
+          *可直接錄製爸媽模仿虎哥的熱情加油聲，答對時就會播放真正的聲音！
         </div>
 
         <div class="rec-box">
-          <!-- 答對錄音 -->
           <div class="rec-row">
             <div>
               <div style="font-weight:800; font-size:0.95rem;">🎉 答對讚美音</div>
@@ -593,7 +790,6 @@
             </div>
           </div>
 
-          <!-- 答錯錄音 -->
           <div class="rec-row" style="margin-bottom:0;">
             <div>
               <div style="font-weight:800; font-size:0.95rem;">💪 答錯鼓勵音</div>
@@ -608,7 +804,6 @@
         </div>
       </div>
 
-      <!-- 系統語音風格切換 -->
       <div class="setting-group">
         <div class="setting-title">🗣️ 朗讀風格</div>
         <label class="radio-option">
@@ -629,7 +824,7 @@
   <div class="modal-overlay" id="victoryModal">
     <div class="modal-content">
       <div style="font-size: 4rem;">🎉🏰⭐</div>
-      <div class="modal-title">太棒了！過關！</div>
+      <div class="modal-title" id="modalTitle">太棒了！過關！</div>
       <div class="modal-desc" id="modalDesc">你成功收集了所有積木，瑪利歐升起城堡旗幟囉！</div>
       <button class="btn-save-settings" onclick="nextLevelOrRestart()">繼續下一關 🚀</button>
     </div>
@@ -640,7 +835,7 @@
     // 1. 遊戲狀態與設定
     // ==========================================
     let currentMode = 'adventure';
-    let memorySubtab = 'table';
+    let memorySubtab = 'rhythm'; // 預設進節奏連唸
     let currentLevel = 0;
     let practiceNum = 2;
     let coins = 0;
@@ -655,14 +850,21 @@
     const CASTLE_GOAL = 8;
     let isVisualizerOpen = false;
 
+    // 節奏口訣專屬狀態
+    let chantMultiplier = 3;  // 當前連唸數字 (2~9)
+    let chantCount = 5;       // 連唸個數 (5 或 9)
+    let isChanting = false;   // 是否正在連唸中
+    let currentChantStep = 1; // 當前步數 1 ~ 5 或 9
+    let chantTimeout = null;
+    let beatSoundEnabled = true;
+
     let voiceConfig = {
       style: localStorage.getItem('voice_style') || 'hugo',
       voiceURI: localStorage.getItem('voice_uri') || '',
-      rate: parseFloat(localStorage.getItem('voice_rate') || '0.86'),
-      pitch: parseFloat(localStorage.getItem('voice_pitch') || '0.76')
+      rate: parseFloat(localStorage.getItem('voice_rate') || '0.90'),
+      pitch: parseFloat(localStorage.getItem('voice_pitch') || '1.0')
     };
 
-    // 自訂真聲錄音 (Base64)
     let customAudioData = {
       correct: localStorage.getItem('custom_audio_correct') || null,
       wrong: localStorage.getItem('custom_audio_wrong') || null
@@ -721,7 +923,7 @@
     }
 
     // ==========================================
-    // 2. Web Audio API 音效
+    // 2. Web Audio API 音效與動感節拍合成
     // ==========================================
     let audioCtx = null;
     function initAudio() {
@@ -732,6 +934,40 @@
       if (audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
+    }
+
+    // 🥁 動感節奏鼓點 (Kick + Snare 雙重奏)
+    function playRhythmDrum() {
+      if (!soundEnabled || !beatSoundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+
+      // 1. 低音大鼓 (Kick)
+      const oscKick = audioCtx.createOscillator();
+      const gainKick = audioCtx.createGain();
+      oscKick.type = 'triangle';
+      oscKick.frequency.setValueAtTime(140, now);
+      oscKick.frequency.exponentialRampToValueAtTime(40, now + 0.12);
+      gainKick.gain.setValueAtTime(0.35, now);
+      gainKick.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+      oscKick.connect(gainKick);
+      gainKick.connect(audioCtx.destination);
+      oscKick.start(now);
+      oscKick.stop(now + 0.12);
+
+      // 2. 拍手響弦 (Snappy Clap)
+      const oscSnare = audioCtx.createOscillator();
+      const gainSnare = audioCtx.createGain();
+      oscSnare.type = 'sine';
+      oscSnare.frequency.setValueAtTime(580, now + 0.12);
+      oscSnare.frequency.exponentialRampToValueAtTime(180, now + 0.22);
+      gainSnare.gain.setValueAtTime(0.2, now + 0.12);
+      gainSnare.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+      oscSnare.connect(gainSnare);
+      gainSnare.connect(audioCtx.destination);
+      oscSnare.start(now + 0.12);
+      oscSnare.stop(now + 0.22);
     }
 
     function playCoinSound() {
@@ -817,14 +1053,38 @@
     // ==========================================
     // 3. 語音系統 & 錄音播放
     // ==========================================
-    function speakText(text) {
-      if (!soundEnabled || !('speechSynthesis' in window)) return;
+    function speakText(text, callback) {
+      if (!soundEnabled || !('speechSynthesis' in window)) {
+        if (callback) callback();
+        return;
+      }
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'zh-TW';
       utterance.rate = voiceConfig.rate;
       utterance.pitch = voiceConfig.pitch;
+
+      let called = false;
+      utterance.onend = () => {
+        if (called) return;
+        called = true;
+        if (callback) callback();
+      };
+      utterance.onerror = () => {
+        if (called) return;
+        called = true;
+        if (callback) callback();
+      };
+
       window.speechSynthesis.speak(utterance);
+
+      // Safari 防呆逾時保護
+      setTimeout(() => {
+        if (!called && callback) {
+          called = true;
+          callback();
+        }
+      }, 2500);
     }
 
     function speakProblem() {
@@ -843,7 +1103,6 @@
     }
 
     function speakAnswerPraise() {
-      // 若有自訂真人虎哥錄音，優先播放！
       if (customAudioData.correct) {
         playCustomAudio('correct');
         const rhyme = getMultiplicationRhyme(num1, num2);
@@ -863,7 +1122,6 @@
     }
 
     function speakWrongEncouragement() {
-      // 若有自訂真人虎哥答錯錄音，優先播放！
       if (customAudioData.wrong) {
         playCustomAudio('wrong');
         return "哎唷～再想一下啦！(播放虎哥真聲)";
@@ -880,118 +1138,161 @@
     }
 
     // ==========================================
-    // 4. 🎙️ 真人虎哥錄音模組 (支援 iPhone Safari)
+    // 4. 🥁 節奏口訣連唸核心邏輯 (一次 5 個或 9 個)
     // ==========================================
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let currentRecordingType = null;
+    function initChantPickers() {
+      const container = document.getElementById('chantNumPickers');
+      container.innerHTML = '';
+      for (let i = 2; i <= 9; i++) {
+        const btn = document.createElement('button');
+        btn.className = `btn-num-pick ${i === chantMultiplier ? 'active' : ''}`;
+        btn.textContent = i;
+        btn.onclick = () => {
+          stopChant();
+          chantMultiplier = i;
+          initChantPickers();
+          renderRhythmTrack();
+          resetSpotlight();
+        };
+        container.appendChild(btn);
+      }
+    }
 
-    async function toggleRecord(type) {
+    function setChantCount(count) {
+      stopChant();
+      chantCount = count;
+      document.getElementById('btnCount5').classList.toggle('active', count === 5);
+      document.getElementById('btnCount9').classList.toggle('active', count === 9);
+      renderRhythmTrack();
+      resetSpotlight();
+    }
+
+    function toggleBeatSound() {
+      beatSoundEnabled = !beatSoundEnabled;
+      document.getElementById('beatToggle').textContent = beatSoundEnabled ? "🥁 鼓點:開" : "🔇 鼓點:關";
+    }
+
+    function renderRhythmTrack() {
+      const track = document.getElementById('rhythmBrickTrack');
+      track.innerHTML = '';
+      for (let i = 1; i <= chantCount; i++) {
+        const brick = document.createElement('div');
+        brick.className = 'chant-brick';
+        brick.id = `chantBrick_${i}`;
+        brick.innerHTML = `<div>${chantMultiplier}×${i}</div><div style="font-size:1.1rem; font-weight:900;">${chantMultiplier * i}</div>`;
+        brick.onclick = () => {
+          stopChant();
+          playSingleStep(i);
+        };
+        track.appendChild(brick);
+      }
+    }
+
+    function resetSpotlight() {
+      document.getElementById('rhythmTextMain').textContent = `準備連唸 ${chantMultiplier} 的口訣！`;
+      document.getElementById('rhythmTextMain').classList.remove('pulse');
+      document.getElementById('rhythmSubFormula').textContent = `點擊「開始節奏連唸」，一次暢快背完 ${chantCount} 個！`;
+    }
+
+    function toggleChantPlayback() {
       initAudio();
-      const btn = document.getElementById(type === 'correct' ? 'btnRecordCorrect' : 'btnRecordWrong');
+      if (isChanting) {
+        stopChant();
+      } else {
+        startChant();
+      }
+    }
 
-      if (mediaRecorder && mediaRecorder.state === 'recording') {
-        // 停止錄音
-        mediaRecorder.stop();
-        btn.classList.remove('recording');
-        btn.textContent = "🎙️ 重新錄音";
+    function startChant() {
+      stopChant();
+      isChanting = true;
+      currentChantStep = 1;
+
+      const btn = document.getElementById('btnPlayChant');
+      btn.classList.add('playing');
+      document.getElementById('playChantIcon').textContent = '⏹️';
+      document.getElementById('playChantText').textContent = '停止連唸';
+
+      runChantStep();
+    }
+
+    function stopChant() {
+      isChanting = false;
+      if (chantTimeout) clearTimeout(chantTimeout);
+      chantTimeout = null;
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+      const btn = document.getElementById('btnPlayChant');
+      if (btn) {
+        btn.classList.remove('playing');
+        document.getElementById('playChantIcon').textContent = '▶️';
+        document.getElementById('playChantText').textContent = '開始節奏連唸';
+      }
+
+      // 清除積木 active 樣式
+      document.querySelectorAll('.chant-brick').forEach(b => b.classList.remove('active'));
+    }
+
+    function runChantStep() {
+      if (!isChanting) return;
+
+      if (currentChantStep > chantCount) {
+        // 全套念完慶祝！
+        stopChant();
+        playVictorySound();
+        coins += 20;
+        document.getElementById('coinCount').textContent = coins;
+        triggerCoinFly(document.getElementById('rhythmTextMain'));
+
+        document.getElementById('rhythmTextMain').textContent = "🎉 太棒了！唱完全部口訣！";
+        document.getElementById('rhythmTextMain').classList.add('pulse');
+        document.getElementById('rhythmSubFormula').textContent = `大腦記憶超深刻！金幣 +20！`;
         return;
       }
 
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-        currentRecordingType = type;
+      // 1. 更新積木軌道高亮
+      document.querySelectorAll('.chant-brick').forEach((b, idx) => {
+        b.classList.toggle('active', (idx + 1) === currentChantStep);
+        if ((idx + 1) < currentChantStep) b.classList.add('finished');
+        else b.classList.remove('finished');
+      });
 
-        mediaRecorder.ondataavailable = e => {
-          if (e.data.size > 0) audioChunks.push(e.data);
-        };
+      // 2. 播放動感鼓點
+      playRhythmDrum();
 
-        mediaRecorder.onstop = () => {
-          const blob = new Blob(audioChunks, { type: 'audio/mp4' });
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const base64Data = reader.result;
-            customAudioData[currentRecordingType] = base64Data;
-            localStorage.setItem(`custom_audio_${currentRecordingType}`, base64Data);
-            updateRecUI();
-            playCustomAudio(currentRecordingType);
-          };
-          reader.readAsDataURL(blob);
-          stream.getTracks().forEach(track => track.stop());
-        };
+      // 3. 更新聚光燈文字
+      const rhyme = getMultiplicationRhyme(chantMultiplier, currentChantStep);
+      const textMain = document.getElementById('rhythmTextMain');
+      textMain.textContent = rhyme;
+      textMain.classList.remove('pulse');
+      void textMain.offsetWidth; // 強制重繪觸發動畫
+      textMain.classList.add('pulse');
 
-        mediaRecorder.start();
-        btn.classList.add('recording');
-        btn.textContent = "⏹️ 點擊停止";
-      } catch (err) {
-        alert("無法啟動麥克風，請確認 Safari 是否允許麥克風權限喔！");
-      }
+      document.getElementById('rhythmSubFormula').textContent = `${chantMultiplier} × ${currentChantStep} = ${chantMultiplier * currentChantStep}`;
+
+      // 4. 朗讀口訣，完成後等待節拍停頓進入下一句
+      speakText(rhyme, () => {
+        if (!isChanting) return;
+        // 留出 400ms 的音樂節奏空白拍
+        chantTimeout = setTimeout(() => {
+          currentChantStep++;
+          runChantStep();
+        }, 450);
+      });
     }
 
-    function playCustomAudio(type) {
-      initAudio();
-      if (!customAudioData[type]) return;
-      const audio = new Audio(customAudioData[type]);
-      audio.play().catch(e => console.log(e));
-    }
-
-    function clearCustomAudio(type) {
-      customAudioData[type] = null;
-      localStorage.removeItem(`custom_audio_${type}`);
-      updateRecUI();
-    }
-
-    function updateRecUI() {
-      // 答對按鈕狀態
-      const statC = document.getElementById('recStatusCorrect');
-      const playC = document.getElementById('btnPlayCorrect');
-      const clrC = document.getElementById('btnClearCorrect');
-      if (customAudioData.correct) {
-        statC.textContent = "✅ 已套用自訂虎哥真聲！";
-        statC.style.color = "#2E8540";
-        playC.style.display = "inline-flex";
-        clrC.style.display = "inline-flex";
-      } else {
-        statC.textContent = "尚未錄製 (使用預設)";
-        statC.style.color = "#718096";
-        playC.style.display = "none";
-        clrC.style.display = "none";
-      }
-
-      // 答錯按鈕狀態
-      const statW = document.getElementById('recStatusWrong');
-      const playW = document.getElementById('btnPlayWrong');
-      const clrW = document.getElementById('btnClearWrong');
-      if (customAudioData.wrong) {
-        statW.textContent = "✅ 已套用自訂虎哥真聲！";
-        statW.style.color = "#2E8540";
-        playW.style.display = "inline-flex";
-        clrW.style.display = "inline-flex";
-      } else {
-        statW.textContent = "尚未錄製 (使用預設)";
-        statW.style.color = "#718096";
-        playW.style.display = "none";
-        clrW.style.display = "none";
-      }
-    }
-
-    document.getElementById('settingsBtn').addEventListener('click', function() {
-      updateRecUI();
-      const radios = document.getElementsByName('voiceStyle');
-      for (let r of radios) { r.checked = (r.value === voiceConfig.style); }
-      document.getElementById('settingsModal').style.display = 'flex';
-    });
-
-    function closeSettingsModal() {
-      document.getElementById('settingsModal').style.display = 'none';
-    }
-
-    function updateVoiceSettings() {
-      const radios = document.getElementsByName('voiceStyle');
-      for (let r of radios) { if (r.checked) voiceConfig.style = r.value; }
-      localStorage.setItem('voice_style', voiceConfig.style);
+    function playSingleStep(step) {
+      currentChantStep = step;
+      document.querySelectorAll('.chant-brick').forEach((b, idx) => {
+        b.classList.toggle('active', (idx + 1) === step);
+      });
+      playRhythmDrum();
+      const rhyme = getMultiplicationRhyme(chantMultiplier, step);
+      const textMain = document.getElementById('rhythmTextMain');
+      textMain.textContent = rhyme;
+      textMain.classList.add('pulse');
+      document.getElementById('rhythmSubFormula').textContent = `${chantMultiplier} × ${step} = ${chantMultiplier * step}`;
+      speakText(rhyme);
     }
 
     // ==========================================
@@ -999,6 +1300,7 @@
     // ==========================================
     function switchMode(mode) {
       currentMode = mode;
+      stopChant();
       document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
       document.querySelector(`.tab-${mode}`).classList.add('active');
 
@@ -1072,31 +1374,39 @@
       }
     }
 
-    // ==========================================
-    // 6. 口訣背誦專屬邏輯
-    // ==========================================
     function switchMemorySubtab(tab) {
+      stopChant();
       memorySubtab = tab;
+      document.getElementById('btnSubtabRhythm').classList.toggle('active', tab === 'rhythm');
       document.getElementById('btnSubtabTable').classList.toggle('active', tab === 'table');
       document.getElementById('btnSubtabCloze').classList.toggle('active', tab === 'cloze');
       renderMemoryMode();
     }
 
     function renderMemoryMode() {
+      const rhythmWrap = document.getElementById('memoryRhythmWrap');
       const tableWrap = document.getElementById('memoryTableWrap');
       const clozeWrap = document.getElementById('memoryClozeWrap');
       const optionsGrid = document.getElementById('optionsGrid');
       const castleContainer = document.getElementById('castleContainer');
 
-      if (memorySubtab === 'table') {
+      rhythmWrap.style.display = 'none';
+      tableWrap.style.display = 'none';
+      clozeWrap.style.display = 'none';
+      optionsGrid.style.display = 'none';
+      castleContainer.style.display = 'none';
+
+      if (memorySubtab === 'rhythm') {
+        rhythmWrap.style.display = 'flex';
+        initChantPickers();
+        renderRhythmTrack();
+        resetSpotlight();
+        document.getElementById('feedbackMsg').textContent = "跟著動感節奏連續唸出 5 個或 9 個口訣，記憶最深刻！";
+      } else if (memorySubtab === 'table') {
         tableWrap.style.display = 'block';
-        clozeWrap.style.display = 'none';
-        optionsGrid.style.display = 'none';
-        castleContainer.style.display = 'none';
-        document.getElementById('feedbackMsg').textContent = "點擊九九乘法表中的任一方格，邊聽邊跟著背誦！";
         init99Table();
+        document.getElementById('feedbackMsg').textContent = "點擊任一方格聽單句口訣！";
       } else {
-        tableWrap.style.display = 'none';
         clozeWrap.style.display = 'block';
         optionsGrid.style.display = 'grid';
         castleContainer.style.display = 'flex';
@@ -1165,7 +1475,7 @@
     }
 
     // ==========================================
-    // 7. 出題核心與選項生成
+    // 6. 出題核心與選項生成 (冒險模式)
     // ==========================================
     function newQuestion() {
       if (currentMode === 'adventure') {
@@ -1192,6 +1502,7 @@
 
       const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
       const optButtons = document.querySelectorAll('.options-grid .lego-btn');
+
       optButtons.forEach((btn, idx) => {
         btn.querySelector('.opt-val').textContent = shuffledOptions[idx];
         btn.dataset.val = shuffledOptions[idx];
@@ -1252,7 +1563,7 @@
     }
 
     // ==========================================
-    // 8. 答題邏輯與回饋
+    // 7. 答題邏輯
     // ==========================================
     function handleAnswer(optIndex) {
       initAudio();
@@ -1330,9 +1641,7 @@
       const modal = document.getElementById('victoryModal');
       const desc = document.getElementById('modalDesc');
       if (currentMode === 'adventure') {
-        desc.textContent = `恭喜完成了「${ADVENTURE_LEVELS[currentLevel].name}」！瑪利歐城堡順利建好，虎哥為你歡呼！`;
-      } else if (currentMode === 'memory') {
-        desc.textContent = `太厲害了！你已經把口訣背得滾瓜爛熟囉！獲得無敵星星 ⭐！`;
+        desc.textContent = `恭喜完成了「${ADVENTURE_LEVELS[currentLevel].name}」！瑪利歐城堡順利建好！`;
       } else {
         desc.textContent = `太強了！你已經熟練掌握了 ${practiceNum} 的乘法表！獲得無敵星星 ⭐！`;
       }
@@ -1370,21 +1679,122 @@
     }
 
     // ==========================================
+    // 8. 錄音模組
+    // ==========================================
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let currentRecordingType = null;
+
+    async function toggleRecord(type) {
+      initAudio();
+      const btn = document.getElementById(type === 'correct' ? 'btnRecordCorrect' : 'btnRecordWrong');
+
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        btn.classList.remove('recording');
+        btn.textContent = "🎙️ 重新錄音";
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        currentRecordingType = type;
+
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(audioChunks, { type: 'audio/mp4' });
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64Data = reader.result;
+            customAudioData[currentRecordingType] = base64Data;
+            localStorage.setItem(`custom_audio_${currentRecordingType}`, base64Data);
+            updateRecUI();
+            playCustomAudio(currentRecordingType);
+          };
+          reader.readAsDataURL(blob);
+          stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorder.start();
+        btn.classList.add('recording');
+        btn.textContent = "⏹️ 點擊停止";
+      } catch (err) {
+        alert("無法啟動麥克風，請確認 Safari 是否允許麥克風權限喔！");
+      }
+    }
+
+    function playCustomAudio(type) {
+      initAudio();
+      if (!customAudioData[type]) return;
+      const audio = new Audio(customAudioData[type]);
+      audio.play().catch(e => console.log(e));
+    }
+
+    function clearCustomAudio(type) {
+      customAudioData[type] = null;
+      localStorage.removeItem(`custom_audio_${type}`);
+      updateRecUI();
+    }
+
+    function updateRecUI() {
+      const statC = document.getElementById('recStatusCorrect');
+      const playC = document.getElementById('btnPlayCorrect');
+      const clrC = document.getElementById('btnClearCorrect');
+      if (customAudioData.correct) {
+        statC.textContent = "✅ 已套用自訂虎哥真聲！";
+        statC.style.color = "#2E8540";
+        playC.style.display = "inline-flex";
+        clrC.style.display = "inline-flex";
+      } else {
+        statC.textContent = "尚未錄製 (使用預設)";
+        statC.style.color = "#718096";
+        playC.style.display = "none";
+        clrC.style.display = "none";
+      }
+
+      const statW = document.getElementById('recStatusWrong');
+      const playW = document.getElementById('btnPlayWrong');
+      const clrW = document.getElementById('btnClearWrong');
+      if (customAudioData.wrong) {
+        statW.textContent = "✅ 已套用自訂虎哥真聲！";
+        statW.style.color = "#2E8540";
+        playW.style.display = "inline-flex";
+        clrW.style.display = "inline-flex";
+      } else {
+        statW.textContent = "尚未錄製 (使用預設)";
+        statW.style.color = "#718096";
+        playW.style.display = "none";
+        clrW.style.display = "none";
+      }
+    }
+
+    document.getElementById('settingsBtn').addEventListener('click', function() {
+      updateRecUI();
+      const radios = document.getElementsByName('voiceStyle');
+      for (let r of radios) { r.checked = (r.value === voiceConfig.style); }
+      document.getElementById('settingsModal').style.display = 'flex';
+    });
+
+    function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
+    function updateVoiceSettings() {
+      const radios = document.getElementsByName('voiceStyle');
+      for (let r of radios) { if (r.checked) voiceConfig.style = r.value; }
+      localStorage.setItem('voice_style', voiceConfig.style);
+    }
+
+    // ==========================================
     // 9. 事件監聽與啟動
     // ==========================================
     document.getElementById('btnSpeak').addEventListener('click', speakProblem);
-
     document.getElementById('soundToggle').addEventListener('click', function() {
       soundEnabled = !soundEnabled;
       this.textContent = soundEnabled ? '🔊' : '🔇';
     });
 
-    window.addEventListener('touchstart', function() {
-      initAudio();
-    }, { once: true });
-    window.addEventListener('click', function() {
-      initAudio();
-    }, { once: true });
+    window.addEventListener('touchstart', function() { initAudio(); }, { once: true });
+    window.addEventListener('click', function() { initAudio(); }, { once: true });
 
     renderLevelPills();
     updateCastleUI();
